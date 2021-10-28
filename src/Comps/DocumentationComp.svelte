@@ -16,4 +16,9 @@
     margin-top: 1em;
     padding: 0.5em;
   }
+
+  .Dragger {
+    cursor:grab;
+    text-align: center;
+  }
 </style>

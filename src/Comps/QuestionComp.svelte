@@ -16,8 +16,10 @@
 <div class="Ques">
   <div class="Dragger">DragMe</div>
 
-  <div>Title</div>
-  <input type="text" bind:value={DataObj.InputData} />
+  <div class="QuestionTitle">
+  <h3 class="QuestionTitleHeader">Question</h3>
+  <input class="QuestionTitleInput" type="text" bind:value={DataObj.InputData} />
+</div>
   <div>
     <div>Answers</div>
     {#each DataObj.Answers as Answer, i}
@@ -35,5 +37,31 @@
     border-radius: 10px;
     margin-top: 1em;
     padding: 0.5em;
+    max-width: 90vw;
+    width: 100%;
+    min-width: 50vw;
+  }
+
+  .QuestionTitle {
+    display: flex;
+  }
+
+  .QuestionTitle * {
+    display: block;
+    margin: 0;
+  }
+
+  .QuestionTitleHeader {
+    align-self: center;
+    padding-right: 1em;
+  }
+
+  .QuestionTitleInput {
+    width: 100%;
+  }
+
+  .Dragger {
+    text-align: center;
+    cursor: grab;
   }
 </style>

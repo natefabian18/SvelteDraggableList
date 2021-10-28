@@ -1,12 +1,7 @@
 <script lang="ts">
   //#region Imports and Inital Setup
-  import {dndzone} from "svelte-dnd-action";
-  import {
-    Item,
-    Question,
-    Documentation,
-    ItemType,
-  } from "./Types/MainTypes";
+  import { dndzone } from "svelte-dnd-action";
+  import { Item, Question, Documentation, ItemType } from "./Types/MainTypes";
   import QuestionComp from "./Comps/QuestionComp.svelte";
   import DocumentationComp from "./Comps/DocumentationComp.svelte";
 
@@ -32,7 +27,7 @@
     question.effectiveOrder = 0;
     question.InputData = "Unset";
     question.effectiveType = ItemType.Question;
-    question.Answers = [{ id: 0, InputData: undefined , correct: false}];
+    question.Answers = [{ id: 0, InputData: undefined, correct: false }];
     items = [...items, question];
   }
 
@@ -58,25 +53,32 @@
 <main>
   <h1>Demo App</h1>
   <div class="JSON">
-    <button type="button" on:click={createJSONString}
-      >Create JSON String</button
-    >
     {JSONString}
   </div>
   <div class="controls">
     <div class="control">
-      <button type="button" on:click={addQuestion}
-        >Add Question</button
-      >
+      <button type="button" on:click={addQuestion}>Add Question</button>
     </div>
     <div class="control">
       <button type="button" on:click={addDocumentation}
         >Add Documentation</button
       >
     </div>
+    <div class="control">
+      <button type="button" on:click={createJSONString}
+        >Create JSON String</button
+      >
+    </div>
   </div>
-  <section class="Form" id="Form" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}" on:finalize="{handleDndFinalize}">
-    {#each items as Block(Block.id)}
+  <!-- Ignore this typescript error -->
+  <section
+    class="Form"
+    id="Form"
+    use:dndzone={{ items, flipDurationMs }}
+    on:consider={handleDndConsider}
+    on:finalize={handleDndFinalize}
+  >
+    {#each items as Block (Block.id)}
       {#if Block.effectiveType == "Question"}
         <svelte:component this={QuestionComp} DataObj={Block} />
       {:else if Block.effectiveType == "Documentation"}
