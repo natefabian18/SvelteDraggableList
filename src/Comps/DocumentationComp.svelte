@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Documentation } from "../Types/MainTypes";
+  import type { Documentation } from "../Types/MainTypes";
 
   export let DataObj: Documentation;
 </script>
