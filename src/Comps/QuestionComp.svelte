@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Question } from "../Types/MainTypes";
+  import type { Question } from "../Types/MainTypes";
 
   export let DataObj: Question;
 
@@ -8,7 +8,7 @@
   ) {
     DataObj.Answers = [
       ...DataObj.Answers,
-      { id: DataObj.Answers.length, InputData: undefined },
+      { id: DataObj.Answers.length, InputData: undefined, correct: false },
     ];
   }
 </script>
@@ -21,7 +21,10 @@
   <div>
     <div>Answers</div>
     {#each DataObj.Answers as Answer, i}
+    <div class="answerBlock">
       <input type="text" bind:value={Answer.InputData} />
+      <input type="checkbox" bind:checked={Answer.correct}>
+    </div>
     {/each}
   </div>
 </div>

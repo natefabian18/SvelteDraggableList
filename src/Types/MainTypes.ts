@@ -17,6 +17,7 @@ export class Documentation extends Item {
 export class QuestionAnswer {
   id: number;
   InputData: string;
+  correct: boolean;
 }
 
 export class Question extends Item {

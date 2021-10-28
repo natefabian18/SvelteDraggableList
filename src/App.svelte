@@ -1,5 +1,6 @@
 <script lang="ts">
   //#region Imports and Inital Setup
+  import {dndzone} from "svelte-dnd-action";
   import {
     Item,
     Question,
@@ -9,8 +10,18 @@
   import QuestionComp from "./Comps/QuestionComp.svelte";
   import DocumentationComp from "./Comps/DocumentationComp.svelte";
 
-  let form = new Array<Question | Documentation>();
+  let items = new Array<Question | Documentation>();
   let seqID = 0;
+  let flipDurationMs = 300;
+  //#endregion
+
+  //#region Drag and Drop code
+  function handleDndConsider(e) {
+    items = e.detail.items;
+  }
+  function handleDndFinalize(e) {
+    items = e.detail.items;
+  }
   //#endregion
 
   //#region Adding Questions and Documentation
@@ -21,8 +32,8 @@
     question.effectiveOrder = 0;
     question.InputData = "Unset";
     question.effectiveType = ItemType.Question;
-    question.Answers = [{ id: 0, InputData: undefined }];
-    form = [...form, question];
+    question.Answers = [{ id: 0, InputData: undefined , correct: false}];
+    items = [...items, question];
   }
 
   function addDocumentation() {
@@ -32,14 +43,14 @@
     Documentation.effectiveOrder = 0;
     Documentation.InputData = "Unset";
     Documentation.effectiveType = ItemType.Documentation;
-    form = [...form, Documentation];
-    console.log(form);
+    items = [...items, Documentation];
+    console.log(items);
   }
 
   let JSONString = "";
 
   function createJSONString() {
-    JSONString = JSON.stringify(form);
+    JSONString = JSON.stringify(items);
   }
   //#endregion
 </script>
@@ -64,8 +75,8 @@
       >
     </div>
   </div>
-  <div class="Form" id="Form">
-    {#each form as Block}
+  <section class="Form" id="Form" use:dndzone="{{items, flipDurationMs}}" on:consider="{handleDndConsider}" on:finalize="{handleDndFinalize}">
+    {#each items as Block(Block.id)}
       {#if Block.effectiveType == "Question"}
         <svelte:component this={QuestionComp} DataObj={Block} />
       {:else if Block.effectiveType == "Documentation"}
@@ -74,7 +85,7 @@
         <div>UnknownBlock</div>
       {/if}
     {/each}
-  </div>
+  </section>
 </main>
 
 <style>
