@@ -1,48 +1,89 @@
 <script lang="ts">
-  //#region Interface Declairation
-  interface Item {
-    id: number;
-    effectiveOrder: number;
-  }
+  //#region Imports and Inital Setup
+  import {
+    Item,
+    Question,
+    Documentation,
+    ItemType,
+  } from "./Types/MainTypes";
+  import QuestionComp from "./Comps/QuestionComp.svelte";
+  import DocumentationComp from "./Comps/DocumentationComp.svelte";
 
-  interface Documentation extends Item {
-    InputData: string;
-  }
-
-  interface QuestionAnswer {
-    id: number;
-    InputData: string;
-  }
-
-  interface Question extends Item {
-    InputData: string;
-    Answers: Array<QuestionAnswer>;
-  }
+  let form = new Array<Question | Documentation>();
+  let seqID = 0;
   //#endregion
 
-  let form = new Array<Item>();
+  //#region Adding Questions and Documentation
+  function addQuestion() {
+    let question = {} as Question;
+    question.id = seqID;
+    seqID++;
+    question.effectiveOrder = 0;
+    question.InputData = "Unset";
+    question.effectiveType = ItemType.Question;
+    question.Answers = [{ id: 0, InputData: undefined }];
+    form = [...form, question];
+  }
 
-  let q: Question = {} as Question;
+  function addDocumentation() {
+    let Documentation = {} as Documentation;
+    Documentation.id = seqID;
+    seqID++;
+    Documentation.effectiveOrder = 0;
+    Documentation.InputData = "Unset";
+    Documentation.effectiveType = ItemType.Documentation;
+    form = [...form, Documentation];
+    console.log(form);
+  }
 
-  q.id = 0;
-  q.effectiveOrder = 0;
-  q.InputData = "what is your problem";
-  q.Answers = [
-    { id: 0, InputData: "wow" },
-    { id: 1, InputData: "such" },
-  ];
-  form[0] = q;
+  let JSONString = "";
 
-  console.log(q);
+  function createJSONString() {
+    JSONString = JSON.stringify(form);
+  }
+  //#endregion
 </script>
 
 <main>
   <h1>Demo App</h1>
+  <div class="JSON">
+    <button type="button" on:click={createJSONString}
+      >Create JSON String</button
+    >
+    {JSONString}
+  </div>
+  <div class="controls">
+    <div class="control">
+      <button type="button" on:click={addQuestion}
+        >Add Question</button
+      >
+    </div>
+    <div class="control">
+      <button type="button" on:click={addDocumentation}
+        >Add Documentation</button
+      >
+    </div>
+  </div>
+  <div class="Form" id="Form">
+    {#each form as Block}
+      {#if Block.effectiveType == "Question"}
+        <svelte:component this={QuestionComp} DataObj={Block} />
+      {:else if Block.effectiveType == "Documentation"}
+        <svelte:component this={DocumentationComp} DataObj={Block} />
+      {:else}
+        <div>UnknownBlock</div>
+      {/if}
+    {/each}
+  </div>
 </main>
 
 <style>
   main {
     width: max-content;
     margin: 0 auto;
+  }
+
+  .JSON {
+    width: 200px;
   }
 </style>
