@@ -23,6 +23,13 @@ export class QuestionAnswer {
 export class Question extends Item {
   InputData: string;
   Answers: Array<QuestionAnswer>;
+  numberOfAtempts: number;
+  FinalAnswer: number;
+}
+
+export class QuestionResponse extends Question {
+  numberOfAttempts: number;
+  labID: number
 }
 //#endregion
 
