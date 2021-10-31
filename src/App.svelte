@@ -28,6 +28,7 @@
     question.InputData = "Unset";
     question.effectiveType = ItemType.Question;
     question.Answers = [{ id: 0, InputData: undefined, correct: false }];
+    question.numberOfAtempts = 1;
     items = [...items, question];
   }
 
@@ -97,6 +98,11 @@
   }
 
   .JSON {
-    width: 200px;
+    width: 90vw;
+  }
+
+  .controls {
+    display: flex;
+    gap: 1em;
   }
 </style>
